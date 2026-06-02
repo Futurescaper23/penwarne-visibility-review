@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SiteView Planning Evidence | FutureScaping Labs</title>
+  <meta name="description" content="Premium planning evidence workspace for drone mapping, 3D context, viewpoint review, terrain layers, and 360 panorama delivery.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="https://cdn.pannellum.org/2.5/pannellum.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+<body>
+  <div class="page-orb page-orb--one" aria-hidden="true"></div>
+  <div class="page-orb page-orb--two" aria-hidden="true"></div>
+  <div class="page-grid" aria-hidden="true"></div>
+
+  <div class="shell">
+    <section id="top" class="fs-shell" data-fs-shell>
+      <div class="fs-shell__stage">
+        <img class="fs-shell__image" alt="" data-fs-hero-image>
+        <div class="fs-shell__glow" aria-hidden="true"></div>
+        <div class="fs-shell__fade" aria-hidden="true"></div>
+
+        <div class="fs-shell__copy">
+          <div class="fs-shell__brand">
+            <div class="fs-shell__mark" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="fs-shell__brandword">
+              <p class="fs-shell__brandname" id="heroBrandName"></p>
+              <p class="fs-shell__brandsub" id="heroBrandSub"></p>
+            </div>
+          </div>
+          <p class="fs-shell__eyebrow" id="heroEyebrow"></p>
+          <h1 class="fs-shell__title" id="projectTitle">SiteView Planning Evidence</h1>
+          <p class="fs-shell__tagline">See the full picture. Plan with confidence.</p>
+          <p class="fs-shell__summary" id="projectSummary"></p>
+        </div>
+
+        <div class="fs-shell__nav">
+          <div class="fs-shell__nav-list">
+            <button class="fs-shell__nav-item is-active" type="button" data-tab-target="overview">
+              <span class="fs-shell__nav-icon-wrap" aria-hidden="true">⌂</span>
+              <span class="fs-shell__nav-label">Overview</span>
+            </button>
+            <button class="fs-shell__nav-item" type="button" data-tab-target="scene">
+              <span class="fs-shell__nav-icon-wrap" aria-hidden="true">◫</span>
+              <span class="fs-shell__nav-label">3D Scene</span>
+            </button>
+            <button class="fs-shell__nav-item" type="button" data-tab-target="viewports">
+              <span class="fs-shell__nav-icon-wrap" aria-hidden="true">◎</span>
+              <span class="fs-shell__nav-label">Viewports</span>
+            </button>
+            <button class="fs-shell__nav-item" type="button" data-tab-target="shed-visuals">
+              <span class="fs-shell__nav-icon-wrap" aria-hidden="true">▣</span>
+              <span class="fs-shell__nav-label">Shed Visuals</span>
+            </button>
+            <button class="fs-shell__nav-item" type="button" data-tab-target="layers">
+              <span class="fs-shell__nav-icon-wrap" aria-hidden="true">≋</span>
+              <span class="fs-shell__nav-label">Map Layers</span>
+            </button>
+            <button class="fs-shell__nav-item" type="button" data-tab-target="panorama">
+              <span class="fs-shell__nav-icon-wrap" aria-hidden="true">360</span>
+              <span class="fs-shell__nav-label">Panorama</span>
+            </button>
+            <button class="fs-shell__nav-item" type="button" data-tab-target="method">
+              <span class="fs-shell__nav-icon-wrap" aria-hidden="true">i</span>
+              <span class="fs-shell__nav-label">Method</span>
+            </button>
+            <button class="fs-shell__nav-item" type="button" data-tab-target="downloads">
+              <span class="fs-shell__nav-icon-wrap" aria-hidden="true">↓</span>
+              <span class="fs-shell__nav-label">Downloads</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="fs-shell__pills">
+          <article class="fs-shell__pill">
+            <p class="fs-shell__pill-label">Location</p>
+            <p id="heroSiteValue" class="fs-shell__pill-value"></p>
+            <p id="heroClientValue" class="fs-shell__pill-subtext"></p>
+          </article>
+        </div>
+
+        <div class="fs-shell__dock fs-shell__dock--right">
+          <p class="eyebrow">Open The Pack</p>
+          <h2 id="heroVisualTitle">SiteView Planning Evidence</h2>
+          <p id="heroVisualNote" class="muted"></p>
+          <div class="hero-actions">
+            <button id="explorePackBtn" class="button button-primary" type="button">Explore Evidence Pack</button>
+            <a id="heroProposedModelLink" class="button" href="#" target="_blank" rel="noopener noreferrer">Open 3D Scene</a>
+            <a id="heroExistingModelLink" class="button button-ghost" href="#" target="_blank" rel="noopener noreferrer">Open Baseline Model</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <section class="tab-panel active" data-panel="overview">
+        <div class="section-stack">
+          <article class="section-head glass">
+            <div>
+              <p class="eyebrow">Planning Question</p>
+              <h2 id="planningQuestion">Visibility assessment</h2>
+            </div>
+            <p id="decisionLine" class="muted compact"></p>
+          </article>
+
+          <div class="overview-grid">
+            <article class="glass story-panel">
+              <p class="eyebrow">Evidence Route</p>
+              <h3>One clear review path from terrain to decision</h3>
+              <div id="workflowList" class="workflow-list"></div>
+            </article>
+
+            <aside class="overview-side">
+              <div id="metricGrid" class="metric-grid"></div>
+            </aside>
+          </div>
+
+            <article class="glass overview-explainer">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">What This Pack Explains</p>
+                  <h2>Planning visibility in context</h2>
+              </div>
+              <p class="muted compact">The site, landform, model placement, mapped viewpoints, and technical imagery are arranged as one evidence-led story rather than separate downloads.</p>
+            </div>
+            <div id="overviewSectionGrid" class="overview-section-grid section-gap"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="scene">
+        <article class="glass scene-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">3D Scene Review</p>
+              <h2>Existing and proposed site models</h2>
+            </div>
+            <p class="muted compact">Use the baseline and proposal models together to orient the site, understand landform, and compare the placement of the poultry sheds in the wider landscape.</p>
+          </div>
+          <div class="scene-model-grid">
+            <article class="scene-model-card">
+              <p class="eyebrow">Baseline</p>
+              <h3>Existing Survey Model</h3>
+              <p class="muted">Review the current site first to understand landform, existing vegetation, nearby receptors, and the unbuilt landscape context.</p>
+              <a id="sceneExistingModelLink" class="button button-ghost" href="#" target="_blank" rel="noopener noreferrer">Open Existing Model</a>
+            </article>
+            <article class="scene-model-card scene-model-card--primary">
+              <p class="eyebrow">Proposal</p>
+              <h3>Proposed Development Model</h3>
+              <p class="muted">Inspect the proposed poultry shed in the same surveyed environment, then move into mapped viewports for fixed-camera evidence.</p>
+              <a id="sceneProposedModelLink" class="button button-primary" href="#" target="_blank" rel="noopener noreferrer">Open Proposed Model</a>
+            </article>
+            <article class="scene-model-card scene-model-card--guide">
+              <p class="eyebrow">Review Tip</p>
+              <h3>Use the model as orientation, then test the actual views</h3>
+              <p class="muted">The 3D scene explains where the proposal sits. The viewport and map sections then test what is actually visible from the mapped camera positions.</p>
+            </article>
+          </div>
+        </article>
+      </section>
+
+      <section class="tab-panel" data-panel="viewports">
+        <article class="glass viewport-panel">
+          <div class="viewport-topline">
+            <div class="viewport-intro">
+              <p class="eyebrow">Viewport Evidence</p>
+              <h2>Guided Viewpoint Review</h2>
+              <p id="viewportSummary" class="muted compact"></p>
+            </div>
+            <div id="viewportMetricBar" class="viewport-metric-bar"></div>
+          </div>
+          <div class="viewport-workspace section-gap">
+            <div id="viewportMap" class="viewport-map"></div>
+            <div id="selectedViewport" class="selected-viewport"></div>
+          </div>
+          <div class="viewport-strip glass section-gap">
+            <div class="viewport-strip__head">
+              <div>
+                <p class="eyebrow">Viewport Strip</p>
+                <h3>Camera Positions A-J</h3>
+              </div>
+              <p class="muted compact">Choose a viewpoint to update the map and review image.</p>
+            </div>
+            <div id="viewportThumbGrid" class="viewport-thumb-grid section-gap"></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="tab-panel" data-panel="shed-visuals">
+        <article class="glass visual-section">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Building Detail</p>
+              <h2>Detailed shed visuals</h2>
+            </div>
+            <p class="muted compact">Path-traced stills focused on the proposal itself, its material presence, and its immediate setting on the platform.</p>
+          </div>
+          <div class="shed-gallery section-gap">
+            <div class="shed-gallery__stage glass">
+              <button id="shedPrevBtn" class="shed-gallery__nav shed-gallery__nav--prev" type="button" aria-label="Previous shed visual">‹</button>
+              <button id="shedNextBtn" class="shed-gallery__nav shed-gallery__nav--next" type="button" aria-label="Next shed visual">›</button>
+              <button id="shedFeaturedMedia" class="shed-gallery__media" type="button" aria-label="Open featured shed visual">
+                <img id="shedFeaturedImg" alt="">
+              </button>
+              <div class="shed-gallery__overlay">
+                <p class="eyebrow">Featured Visual</p>
+                <h3 id="shedFeaturedTitle">Detailed Shed Visual</h3>
+                <p id="shedFeaturedNote" class="muted"></p>
+              </div>
+            </div>
+            <div id="shedViewGrid" class="shed-gallery__rail"></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="tab-panel" data-panel="layers">
+        <article id="layerWorkspace" class="glass layer-workspace">
+          <div class="layer-heading">
+            <div>
+              <p class="eyebrow">Terrain Workspace</p>
+              <h2>Orthomosaic, DSM and contours</h2>
+            </div>
+            <div class="layer-controls">
+              <div class="segmented" aria-label="Layer mode">
+                <button id="singleModeBtn" class="active" type="button">Single</button>
+                <button id="sliderModeBtn" type="button">Slider</button>
+                <button id="transparencyModeBtn" type="button">Blend</button>
+              </div>
+              <div class="segmented" aria-label="Map zoom controls">
+                <button id="zoomOutBtn" type="button">-</button>
+                <button id="zoomInBtn" type="button">+</button>
+              </div>
+              <button id="resetViewBtn" class="button button-ghost" type="button">Reset</button>
+              <button id="fullscreenMapBtn" class="button" type="button">Full Screen</button>
+            </div>
+          </div>
+
+          <div class="viewer-layout">
+            <div id="imageStage" class="image-stage">
+              <div id="singleLayer" class="map-layer"><img id="singleImg" alt=""></div>
+              <div id="baseLayer" class="map-layer"><img id="baseImg" alt=""></div>
+              <div id="blendLayer" class="map-layer"><img id="blendImg" alt=""></div>
+              <div id="swipeLayer" class="map-layer swipe-layer"><img id="swipeImg" alt=""></div>
+              <div id="swipeHandle" class="swipe-handle" aria-hidden="true"></div>
+            </div>
+
+            <aside class="tool-panel">
+              <label>
+                Primary layer
+                <select id="primaryLayerSelect">
+                  <option value="ortho">Orthomosaic</option>
+                  <option value="dsm">DSM surface model</option>
+                  <option value="contour">Contours</option>
+                </select>
+              </label>
+              <label>
+                Secondary layer
+                <select id="secondaryLayerSelect">
+                  <option value="dsm">DSM surface model</option>
+                  <option value="contour">Contours</option>
+                  <option value="ortho">Orthomosaic</option>
+                </select>
+              </label>
+              <label>
+                Secondary opacity
+                <input id="opacityRange" type="range" min="0" max="100" value="55">
+              </label>
+              <div class="zoom-readout">
+                <span>Zoom</span>
+                <strong id="zoomValue">100%</strong>
+              </div>
+              <p id="layerCaption" class="muted"></p>
+            </aside>
+          </div>
+        </article>
+      </section>
+
+      <section class="tab-panel" data-panel="panorama">
+        <article class="glass panorama-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">360 Context</p>
+              <h2>Panorama review</h2>
+            </div>
+            <button id="loadPanoBtn" class="button button-primary" type="button">Load 360 Panorama</button>
+          </div>
+          <div id="panoramaViewer" class="panorama-viewer">
+            <p class="muted">Load the panorama when you need the full site context.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="tab-panel" data-panel="method">
+        <article class="glass">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Method Record</p>
+              <h2>Planning evidence record</h2>
+            </div>
+            <p class="muted compact">Capture basis, modelling assumptions, image interpretation, and the limits that should be confirmed before formal planning submission.</p>
+          </div>
+          <div id="methodGrid" class="method-grid section-gap"></div>
+        </article>
+      </section>
+
+      <section class="tab-panel" data-panel="downloads">
+        <article class="glass">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Outputs</p>
+              <h2>Downloads and links</h2>
+            </div>
+            <p class="muted compact">Quick access to the packaged viewport exports, shed visuals, terrain layers, and panorama source assets.</p>
+          </div>
+          <div id="downloadList" class="download-list section-gap"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <div id="imageModal" class="image-modal" aria-hidden="true">
+    <div id="imageModalShell" class="image-modal__shell">
+      <div class="image-modal__topbar">
+        <div>
+          <p class="eyebrow">Image Review</p>
+          <strong id="modalTitle">Viewpoint image</strong>
+        </div>
+        <div class="image-modal__actions">
+          <button id="modalZoomOutBtn" class="button button-ghost" type="button">-</button>
+          <button id="modalZoomInBtn" class="button button-ghost" type="button">+</button>
+          <button id="modalResetBtn" class="button button-ghost" type="button">Reset</button>
+          <button id="modalFullscreenBtn" class="button" type="button">Full Screen</button>
+          <button id="modalCloseBtn" class="button button-primary" type="button">Close</button>
+        </div>
+      </div>
+      <div id="modalStage" class="modal-stage">
+        <img id="modalImg" alt="">
+      </div>
+      <div class="image-modal__footer">
+        <span id="modalZoomValue">100%</span>
+        <span>Wheel or use buttons to zoom, then drag to inspect detail.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.pannellum.org/2.5/pannellum.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

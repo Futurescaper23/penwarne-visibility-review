@@ -1,0 +1,14 @@
+{
+  "name": "futurescaping-planning-visibility-packs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reusable FutureScaping planning visibility evidence packs.",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check app.js && node --check server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

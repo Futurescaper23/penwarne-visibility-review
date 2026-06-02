@@ -1,0 +1,30 @@
+plugins = []
+functionsDirectory = "G:\\My Drive\\Futurescaping\\CODEX\\rendering-visual-projects\\netlify\\functions"
+functionsDirectoryOrigin = "config-v1"
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "G:\\My Drive\\Futurescaping\\CODEX\\rendering-visual-projects"
+publishOrigin = "default"
+commandOrigin = "config"
+command = "# no build command"
+functions = "G:\\My Drive\\Futurescaping\\CODEX\\rendering-visual-projects\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
