@@ -1,0 +1,40 @@
+#: locale=en
+
+## Action
+
+### URL
+LinkBehaviour_AD459E56_A3B5_037B_41DF_D25A6AEDAEAA.source = /viewer-bridge.html?src=/projects/confidential-rural-site/twinmotion/Proposed/A.png&title=Proposed%20View%20A&caption=Supporting%20proposed%20visual%20A.
+LinkBehaviour_AC0312A2_A3B5_03DA_4192_92C12895E9BC.source = /viewer-bridge.html?src=/projects/confidential-rural-site/twinmotion/Proposed/B.png&title=Proposed%20View%20B&caption=Supporting%20proposed%20visual%20B.
+LinkBehaviour_AC9716D4_A3B3_037E_41DA_894341FCA155.source = /viewer-bridge.html?src=/projects/confidential-rural-site/twinmotion/Proposed/C.png&title=Proposed%20View%20C&caption=Supporting%20proposed%20visual%20C.
+LinkBehaviour_AC7A2440_A3B3_0757_41C4_D03C2FFB2070.source = /viewer-bridge.html?src=/projects/confidential-rural-site/twinmotion/Proposed/D.png&title=Proposed%20View%20D&caption=Supporting%20proposed%20visual%20D.
+LinkBehaviour_AD648F90_A3B3_01F6_41E1_537ABF6607B7.source = /viewer-bridge.html?src=/projects/confidential-rural-site/twinmotion/Proposed/E.png&title=Proposed%20View%20E&caption=Supporting%20proposed%20visual%20E.
+LinkBehaviour_AC3C95FC_A3BD_012F_41DE_ACD76B67870F.source = /viewer-bridge.html?src=/projects/confidential-rural-site/twinmotion/Proposed/F.png&title=Proposed%20View%20F&caption=Supporting%20proposed%20visual%20F.
+LinkBehaviour_B397BC71_A3BD_0739_41DB_30CEB995C2EF.source = /viewer-bridge.html?src=/projects/confidential-rural-site/twinmotion/Proposed/G.png&title=Proposed%20View%20G&caption=Supporting%20proposed%20visual%20G.
+LinkBehaviour_ACF0980C_A3BD_0EEE_41D4_A2845C10401E.source = /viewer-bridge.html?src=/projects/confidential-rural-site/twinmotion/Proposed/H.png&title=Proposed%20View%20H&caption=Supporting%20proposed%20visual%20H.
+LinkBehaviour_8842C097_943F_9A12_41AB_D6A7D5AA400E.source = /viewer-bridge.html?src=/projects/confidential-rural-site/viewpoints/View%201.jpg&title=Existing%20View%201&caption=Existing%20reference%20view%201.
+LinkBehaviour_864493BA_943B_9E1D_41CD_9CB11B320761.source = /viewer-bridge.html?src=/projects/confidential-rural-site/viewpoints/View%202.jpg&title=Existing%20View%202&caption=Existing%20reference%20view%202.
+LinkBehaviour_ADD6715C_A3B5_016E_41E0_1FBF847C18B0.source = /viewer-bridge.html?src=/projects/confidential-rural-site/viewpoints/View%203.jpg&title=Existing%20View%203&caption=Existing%20reference%20view%203.
+LinkBehaviour_AC328044_A3B5_1F5E_41DB_CF1C0B66D0E3.source = /viewer-bridge.html?src=/projects/confidential-rural-site/viewpoints/View%204.jpg&title=Graveyard%20Views%204%20and%205&label=View%204&src2=/projects/confidential-rural-site/viewpoints/View%205.jpg&title2=Existing%20View%205&label2=View%205&caption=These%20two%20graveyard%20views%20look%20towards%20the%20site.%20In%20practice%20there%20was%20no%20meaningful%20outward%20view%20from%20the%20church%20itself%2C%20and%20the%20tree%20cover%20shown%20here%20is%20before%20full%20leaf.
+LinkBehaviour_AC121D63_A3B7_015A_41DA_EA7DA8152B33.source = /viewer-bridge.html?src=/projects/confidential-rural-site/viewpoints/View%206.jpg&title=Existing%20View%206&caption=Existing%20reference%20view%206.
+
+## Media
+
+### Floorplan
+
+### Image
+imlevel_B3BFD95E_A3B7_016A_41CF_DA2AC4373523.url = media/map_8EFE378B_94EE_86F2_41D4_0D1672535ABC_en_0.webp
+imlevel_B3BFC95E_A3B7_016A_41CA_438F355FC546.url = media/map_8EFE378B_94EE_86F2_41D4_0D1672535ABC_en_1.webp
+imlevel_B3BFF95E_A3B7_016A_41D1_09523F701F44.url = media/map_8EFE378B_94EE_86F2_41D4_0D1672535ABC_en_2.webp
+imlevel_B3BFE95E_A3B7_016A_41DB_91956F4D34DA.url = media/map_8EFE378B_94EE_86F2_41D4_0D1672535ABC_en_3.webp
+
+### Title
+map_8EFE378B_94EE_86F2_41D4_0D1672535ABC.label = 3D Map
+panorama_87F37845_947F_8A77_41B8_0745209D191E.label = Panorama4
+panorama_9F99B48F_93D7_9AF2_419D_408D4E6AFDA2.label = panorama
+
+## Tour
+
+### Description
+
+### Title
+tour.name = Penwarne Farm, Portmellion

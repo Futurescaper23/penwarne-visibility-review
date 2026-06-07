@@ -26,6 +26,59 @@ Then open:
 http://localhost:3095
 ```
 
+## Deploy To Render
+
+This project should be deployed at the root of the site, not inside a subfolder. That means the live URL should look like:
+
+```text
+https://your-project.onrender.com/
+```
+
+and not:
+
+```text
+https://your-project.onrender.com/some-subfolder/
+```
+
+That matters because the 3DVista hotspot links use root-relative paths such as:
+
+```text
+/viewer-bridge.html?src=/projects/...
+```
+
+### Idiot-Proof Render Steps
+
+1. Push this repo to GitHub.
+2. Log into Render.
+3. Click `New +`.
+4. Choose `Blueprint`.
+5. Connect the GitHub repo for this project.
+6. Let Render read the included [render.yaml](./render.yaml).
+7. Confirm the new web service.
+8. Wait for the first deploy to finish.
+9. Open the Render URL and test:
+   - home page loads
+   - `3D Scene` links open
+   - `3DVista` loads
+   - a hotspot using `/viewer-bridge.html?...` opens over the app instead of as a raw image
+
+### Render Settings Used
+
+If Render asks you to enter them manually, use:
+
+```text
+Runtime: Node
+Build Command: npm install
+Start Command: npm start
+```
+
+### Before You Go Live
+
+- Make sure the 3DVista hotspots are using the `viewer-bridge.html` URLs from:
+  `projects/confidential-rural-site/references/3dvista-hotspot-urls.md`
+- Keep the app at the site root on Render.
+- Test at least one normal image hotspot and the combined `4/5` hotspot after deployment.
+
 ## Repeatable Project Structure
 
 ```text

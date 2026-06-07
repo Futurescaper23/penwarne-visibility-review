@@ -1,3 +1,4 @@
 downloads/
 *.zip
 server.err.log
+server.log

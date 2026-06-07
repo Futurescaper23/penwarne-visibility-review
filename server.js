@@ -7,16 +7,21 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT || 3095);
 
 const types = new Map([
+  [".htm", "text/html; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
   [".css", "text/css; charset=utf-8"],
   [".js", "text/javascript; charset=utf-8"],
   [".json", "application/json; charset=utf-8"],
+  [".txt", "text/plain; charset=utf-8"],
   [".jpg", "image/jpeg"],
   [".jpeg", "image/jpeg"],
   [".png", "image/png"],
   [".webp", "image/webp"],
   [".svg", "image/svg+xml"],
-  [".pdf", "application/pdf"]
+  [".pdf", "application/pdf"],
+  [".wasm", "application/wasm"],
+  [".glb", "model/gltf-binary"],
+  [".cur", "application/octet-stream"]
 ]);
 
 function resolveRequest(url) {

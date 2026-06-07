@@ -18,6 +18,7 @@ const state = {
   startPanY: 0,
   panoLoaded: false,
   panoViewer: null,
+  selectedReferenceId: null,
   selectedViewportId: null,
   selectedShedId: null,
   modal: {
@@ -33,6 +34,7 @@ const state = {
 };
 
 const els = {};
+let viewerChannel = null;
 
 const layerLabels = {
   ortho: "Orthomosaic",
@@ -56,7 +58,89 @@ function assetUrl(name) {
 }
 
 function twinmotionUrl(item) {
-  return `${state.project.twinmotion.basePath}/${item.file}`;
+  const basePath = item.basePath || state.project.twinmotion.basePath;
+  return `${basePath}/${item.file}`;
+}
+
+function comparisonUrl(item) {
+  const basePath = item.basePath || "projects/confidential-rural-site/viewpoints";
+  return `${basePath}/${item.file}`;
+}
+
+function parseViewerHash() {
+  const hash = window.location.hash || "";
+  if (!hash.startsWith("#viewer?")) return null;
+
+  const query = new URLSearchParams(hash.slice("#viewer?".length));
+  const src = query.get("src");
+  if (!src) return null;
+
+  return {
+    src,
+    title: query.get("title") || "Planning Evidence Image",
+    note: query.get("note") || query.get("caption") || "",
+    compare: query.get("src2")
+      ? {
+          src: query.get("src2"),
+          title: query.get("title2") || "Comparison Image",
+          label: query.get("label2") || "Comparison"
+        }
+      : null,
+    label: query.get("label") || "Image"
+  };
+}
+
+function clearViewerHash() {
+  if (!window.location.hash.startsWith("#viewer?")) return;
+  history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+}
+
+function syncModalFromHash() {
+  const payload = parseViewerHash();
+  if (payload) {
+    openImageModal(payload.src, payload.title, { note: payload.note, fromHash: true });
+  } else if (els.imageModal?.classList.contains("open")) {
+    closeImageModal({ keepHash: true });
+  }
+}
+
+function openModalFromPayload(payload) {
+  if (!payload?.src) return;
+  if (payload.requestId) {
+    try {
+      localStorage.setItem("planning-image-viewer-ack", JSON.stringify({
+        requestId: payload.requestId,
+        ts: Date.now()
+      }));
+    } catch {
+      // Ignore acknowledgement failures.
+    }
+  }
+  openImageModal(payload.src, payload.title || "Planning Evidence Image", {
+    note: payload.note || payload.caption || "",
+    label: payload.label || "Image",
+    compare: payload.compare || null
+  });
+}
+
+function registerViewerBridge() {
+  if (typeof BroadcastChannel !== "undefined") {
+    viewerChannel = new BroadcastChannel("planning-image-viewer");
+    viewerChannel.addEventListener("message", (event) => {
+      openModalFromPayload(event.data);
+    });
+  }
+
+  window.addEventListener("storage", (event) => {
+    if (event.key !== "planning-image-viewer" || !event.newValue) return;
+
+    try {
+      const payload = JSON.parse(event.newValue);
+      openModalFromPayload(payload);
+    } catch {
+      // Ignore malformed bridge payloads.
+    }
+  });
 }
 
 async function loadProjects() {
@@ -91,10 +175,13 @@ function cacheElements() {
     "overviewSectionGrid",
     "sceneExistingModelLink",
     "sceneProposedModelLink",
+    "vistaPanel",
+    "sceneVistaLink",
+    "sceneVistaFrame",
     "viewportSummary",
     "viewportMetricBar",
-    "viewportMap",
-    "selectedViewport",
+    "comparisonStage",
+    "existingThumbGrid",
     "viewportThumbGrid",
     "shedViewGrid",
     "shedFeaturedMedia",
@@ -135,6 +222,13 @@ function cacheElements() {
     "modalTitle",
     "modalStage",
     "modalImg",
+    "modalCompare",
+    "modalCompareImgA",
+    "modalCompareImgB",
+    "modalCompareLabelA",
+    "modalCompareLabelB",
+    "modalInfo",
+    "modalNote",
     "modalZoomOutBtn",
     "modalZoomInBtn",
     "modalResetBtn",
@@ -147,11 +241,11 @@ function cacheElements() {
 }
 
 function productName() {
-  return state.project.productName || "SiteView Planning Evidence";
+  return state.project.productName || "SiteView Visibility Review";
 }
 
 function productTagline() {
-  return state.project.heroLine || "Drone mapping, 3D models, viewpoint evidence and interactive map layers for clearer planning decisions.";
+  return state.project.heroLine || "Drone mapping, 3D models, viewpoint review and interactive map layers for early-stage site reconnaissance.";
 }
 
 function setLink(element, href, fallbackText) {
@@ -169,7 +263,7 @@ function setLink(element, href, fallbackText) {
 function renderHero() {
   const heroAssetName = state.project.assets.heroShell ? "heroShell" : (state.project.assets.hero ? "hero" : "ortho");
   const heroTitle = productName();
-  const heroNote = "Drone mapping, 3D models, viewpoint evidence and interactive terrain layers in one premium planning review pack.";
+  const heroNote = "Drone mapping, 3D models, viewpoint review and interactive terrain layers in one early-stage visibility review pack.";
   const visualSrc = assetUrl(heroAssetName);
   const heroImage = document.querySelector("[data-fs-hero-image]");
 
@@ -224,6 +318,18 @@ function renderOverview() {
 function renderScene() {
   setLink(els.sceneExistingModelLink, state.project.existingModelUrl, "Open Existing Model");
   setLink(els.sceneProposedModelLink, state.project.proposedModelUrl || state.project.modelUrl, "Open Proposed Model");
+
+  if (state.project.vistaUrl) {
+    els.vistaPanel.classList.remove("scene-vista--hidden");
+    els.sceneVistaLink.href = state.project.vistaUrl;
+    els.sceneVistaLink.removeAttribute("aria-disabled");
+    els.sceneVistaFrame.src = state.project.vistaUrl;
+  } else {
+    els.vistaPanel.classList.add("scene-vista--hidden");
+    els.sceneVistaLink.href = "#";
+    els.sceneVistaLink.setAttribute("aria-disabled", "true");
+    els.sceneVistaFrame.removeAttribute("src");
+  }
 }
 
 function visualCard(item, className = "", meta = {}) {
@@ -245,7 +351,7 @@ function visualCard(item, className = "", meta = {}) {
 
   media.type = "button";
   media.setAttribute("aria-label", `Open ${item.title}`);
-  media.addEventListener("click", () => openImageModal(src, item.title));
+  media.addEventListener("click", () => openImageModal(src, item.title, { note: item.note }));
   media.append(image);
 
   body.append(create("h3", "", item.title));
@@ -264,12 +370,13 @@ function renderShedGallery() {
 
   const selectedIndex = shedViews.findIndex((item) => item.id === selected.id);
   const selectedSrc = twinmotionUrl(selected);
+  const shortTitle = selected.title.replace("Detailed Shed Visual ", "Visual ");
 
   els.shedFeaturedImg.src = selectedSrc;
   els.shedFeaturedImg.alt = selected.title;
-  els.shedFeaturedTitle.textContent = selected.title;
-  els.shedFeaturedNote.textContent = selected.note;
-  els.shedFeaturedMedia.onclick = () => openImageModal(selectedSrc, selected.title);
+  els.shedFeaturedTitle.textContent = shortTitle;
+  els.shedFeaturedNote.textContent = "";
+  els.shedFeaturedMedia.onclick = () => openImageModal(selectedSrc, selected.title, { note: selected.note });
 
   els.shedViewGrid.innerHTML = "";
 
@@ -302,25 +409,148 @@ function renderShedGallery() {
   els.shedNextBtn.disabled = selectedIndex >= shedViews.length - 1;
 }
 
-function renderViewports() {
-  const twinmotion = state.project.twinmotion;
-  const selected = twinmotion.viewpoints.find((item) => item.id === state.selectedViewportId) || twinmotion.viewpoints[0];
-  state.selectedViewportId = selected.id;
-  const selectedLabel = selected.title.replace("Viewpoint ", "");
-  const viewportMapSrc = state.project.assets.viewportDioramaMap
-    ? assetUrl("viewportDioramaMap")
-    : twinmotionUrl(twinmotion.overallMap);
+function buildViewportCard(item, options) {
+  const card = create("article", "viewport-map-card");
+  const media = create("button", "selected-viewport__media");
+  const image = create("img");
+  const body = create("div", "selected-viewport__body");
+  const meta = create("div", "selected-viewport__meta");
+  const badge = create("span", "selected-viewport__badge", options.badge);
+  const stats = create("div", "selected-viewport__stats");
+  const primaryStat = create("div", "selected-stat");
+  const secondaryStat = create("div", "selected-stat");
+  const src = twinmotionUrl(item);
 
-  els.viewportSummary.textContent = twinmotion.summary;
+  image.src = src;
+  image.alt = item.title;
+  image.decoding = "async";
+  media.type = "button";
+  media.setAttribute("aria-label", `Open ${item.title}`);
+  media.addEventListener("click", () => openImageModal(src, item.title, { note: item.note }));
+
+  primaryStat.append(create("span", "", options.statLabel));
+  primaryStat.append(create("strong", "", options.statValue));
+  secondaryStat.append(create("span", "", options.secondaryStatLabel));
+  secondaryStat.append(create("strong", "", options.secondaryStatValue));
+
+  stats.append(primaryStat, secondaryStat);
+  meta.append(badge);
+  media.append(image, meta, stats);
+
+  body.append(create("p", "eyebrow", options.eyebrow));
+  body.append(create("h3", "", item.title));
+  body.append(create("p", "muted", item.note));
+
+  card.append(media, body);
+  return card;
+}
+
+function buildComparisonFigure(item, options) {
+  const figure = create("button", "comparison-figure");
+  const image = create("img");
+  const label = create("span", "comparison-figure__label", options.label);
+  const src = comparisonUrl(item);
+
+  figure.type = "button";
+  figure.setAttribute("aria-label", `Open ${item.title}`);
+  figure.addEventListener("click", () => openImageModal(src, item.title, { note: item.note }));
+
+  image.src = src;
+  image.alt = item.title;
+  image.loading = "lazy";
+  image.decoding = "async";
+
+  figure.append(image, label);
+  return figure;
+}
+
+function buildComparisonStage(referenceItem) {
+  const panel = create("article", "comparison-panel");
+  const header = create("div", "comparison-panel__header");
+  const body = create("div", "comparison-panel__body");
+  const summary = create("div", "comparison-panel__summary");
+  const comparisonItem = referenceItem.comparison
+    ? {
+        title: referenceItem.comparison.title,
+        file: referenceItem.comparison.file,
+        basePath: referenceItem.comparison.basePath,
+        note: referenceItem.comparison.note
+      }
+    : null;
+  const combinedNotes = [referenceItem.note, comparisonItem?.note].filter(Boolean).join(" ");
+
+  header.append(create("p", "eyebrow", "Selected Viewpoint"));
+  header.append(create("h3", "", comparisonItem ? `${referenceItem.title} comparison` : referenceItem.title));
+  header.append(create("p", "muted", comparisonItem
+    ? "Existing and proposed views are paired here at a bigger scale so the difference reads immediately."
+    : "This viewpoint is currently shown as a single large reference image. Add a matching proposed render and it will drop into the same comparison layout."));
+
+  body.append(buildComparisonFigure(referenceItem, { label: "Existing" }));
+  if (comparisonItem) {
+    body.append(buildComparisonFigure(comparisonItem, { label: "Proposed" }));
+    body.classList.add("comparison-panel__body--split");
+  } else {
+    body.classList.add("comparison-panel__body--single");
+  }
+
+  summary.append(create("p", "eyebrow", comparisonItem ? "Comparison Note" : "Reference Note"));
+  summary.append(create("p", "comparison-panel__note", comparisonItem
+    ? combinedNotes
+    : referenceItem.note));
+
+  const mapDrawer = create("aside", "comparison-map-drawer");
+  const mapHandle = create("button", "comparison-map-drawer__handle");
+  const mapPanel = create("div", "comparison-map-drawer__panel");
+  const mapButton = create("button", "comparison-map-drawer__media");
+  const mapImage = create("img");
+  const mapCopy = create("div", "comparison-map-drawer__copy");
+  const mapSrc = "projects/confidential-rural-site/viewpoints/3D Map V2.png";
+
+  mapHandle.type = "button";
+  mapHandle.setAttribute("aria-label", "Reveal 3D viewpoint orientation map");
+  mapHandle.append(create("span", "", "3D Map"));
+
+  mapButton.type = "button";
+  mapButton.setAttribute("aria-label", "Open 3D viewpoint orientation map");
+  mapButton.addEventListener("click", () => openImageModal(mapSrc, "3D Viewpoint Orientation Map", {
+    note: "Use this map to understand where each viewpoint is taken from and the general direction of view back towards the site."
+  }));
+
+  mapImage.src = mapSrc;
+  mapImage.alt = "3D viewpoint orientation map";
+  mapImage.loading = "lazy";
+  mapImage.decoding = "async";
+
+  mapCopy.append(create("p", "eyebrow", "3D Orientation Map"));
+  mapCopy.append(create("h3", "", "View direction reference"));
+  mapCopy.append(create("p", "muted", "Hover this tab when you want a quick reminder of where the viewpoints are taken from and the direction they look towards the site."));
+
+  mapButton.append(mapImage);
+  mapPanel.append(mapButton, mapCopy);
+  mapDrawer.append(mapHandle, mapPanel);
+  panel.append(mapDrawer);
+
+  panel.append(header, body, summary);
+  return panel;
+}
+
+function renderViewports() {
+  const referenceViews = state.project.referenceViews || { summary: "", views: [] };
+  const proposedViews = state.project.twinmotion;
+  const selectedReference = referenceViews.views.find((item) => item.id === state.selectedReferenceId) || referenceViews.views[0];
+
+  state.selectedReferenceId = selectedReference ? selectedReference.id : null;
+
+  els.viewportSummary.textContent = proposedViews.summary;
   els.viewportMetricBar.innerHTML = "";
-  els.viewportMap.innerHTML = "";
-  els.selectedViewport.innerHTML = "";
+  els.comparisonStage.innerHTML = "";
+  els.existingThumbGrid.innerHTML = "";
   els.viewportThumbGrid.innerHTML = "";
 
   [
-    { value: String(twinmotion.viewpoints.length), label: "Mapped Viewpoints" },
-    { value: "A-J", label: "Camera Positions" },
-    { value: selectedLabel, label: "Selected Review Image" }
+    { value: String(referenceViews.views.length), label: "Existing Views" },
+    { value: String(proposedViews.viewpoints.length), label: "Proposed Views" },
+    { value: String(proposedViews.shedViews.length), label: "Shed Visuals" }
   ].forEach((metric) => {
     const card = create("article", "viewport-metric");
     card.append(create("strong", "", metric.value));
@@ -328,83 +558,14 @@ function renderViewports() {
     els.viewportMetricBar.append(card);
   });
 
-  const mapCard = create("article", "viewport-map-card");
-  const mapMedia = create("div", "viewport-map-card__media");
-  const mapFrame = create("div", "viewport-map-card__image-frame");
-  const mapButton = create("button", "viewport-map-card__image-button");
-  const mapImg = create("img");
-  const hotspotLayer = create("div", "viewport-hotspot-layer");
-  const mapBody = create("div", "viewport-map-card__body");
-  const mapSrc = viewportMapSrc;
+  if (selectedReference) {
+    els.comparisonStage.append(buildComparisonStage(selectedReference));
+  }
 
-  mapImg.src = mapSrc;
-  mapImg.alt = twinmotion.overallMap.title;
-  mapImg.loading = "lazy";
-  mapImg.decoding = "async";
-  mapButton.type = "button";
-  mapButton.setAttribute("aria-label", `Open ${twinmotion.overallMap.title}`);
-  mapButton.addEventListener("click", () => openImageModal(mapSrc, twinmotion.overallMap.title));
-  mapButton.append(mapImg);
-
-  (twinmotion.mapHotspots || []).forEach((hotspot) => {
-    const target = twinmotion.viewpoints.find((item) => item.id === hotspot.viewpointId);
-    if (!target) return;
-
-    const button = create("button", "viewport-hotspot");
-    button.type = "button";
-    button.style.left = `${hotspot.x}%`;
-    button.style.top = `${hotspot.y}%`;
-    button.setAttribute("aria-label", `Select ${target.title} from map`);
-    button.title = target.title;
-    button.addEventListener("click", () => {
-      state.selectedViewportId = target.id;
-      renderViewports();
-    });
-    hotspotLayer.append(button);
-  });
-
-  mapFrame.append(mapButton, hotspotLayer);
-  mapMedia.append(mapFrame);
-  const mapTag = create("span", "viewport-card-pill", "Site Context");
-  mapBody.append(create("p", "eyebrow", "Mapped Cameras"));
-  mapBody.append(create("h3", "", twinmotion.overallMap.title));
-  mapBody.append(mapTag);
-  mapBody.append(create("p", "muted", twinmotion.overallMap.note));
-  mapCard.append(mapMedia, mapBody);
-  els.viewportMap.append(mapCard);
-
-  const selectedSrc = twinmotionUrl(selected);
-  const selectedMedia = create("button", "selected-viewport__media");
-  const selectedImg = create("img");
-  const selectedBody = create("div", "selected-viewport__body");
-  const selectedMeta = create("div", "selected-viewport__meta");
-  const selectedBadge = create("span", "selected-viewport__badge", selected.title.replace("Viewpoint ", ""));
-  const selectedStats = create("div", "selected-viewport__stats");
-  const bearingStat = create("div", "selected-stat");
-  const distanceStat = create("div", "selected-stat");
-
-  selectedImg.src = selectedSrc;
-  selectedImg.alt = selected.title;
-  selectedImg.decoding = "async";
-  selectedMedia.type = "button";
-  selectedMedia.setAttribute("aria-label", `Open ${selected.title}`);
-  selectedMedia.addEventListener("click", () => openImageModal(selectedSrc, selected.title));
-  bearingStat.append(create("span", "", "Bearing"));
-  bearingStat.append(create("strong", "", "310° NW"));
-  distanceStat.append(create("span", "", "Distance"));
-  distanceStat.append(create("strong", "", "~215 m"));
-  selectedStats.append(bearingStat, distanceStat);
-  selectedMeta.append(selectedBadge);
-  selectedMedia.append(selectedImg, selectedMeta, selectedStats);
-  selectedBody.append(create("p", "eyebrow", "Selected View"));
-  selectedBody.append(create("h3", "", selected.title));
-  selectedBody.append(create("p", "muted", selected.note));
-  els.selectedViewport.append(selectedMedia, selectedBody);
-
-  twinmotion.viewpoints.forEach((item) => {
+  referenceViews.views.forEach((item) => {
     const thumb = create("button", "viewport-thumb");
     const image = create("img");
-    const label = create("span", "", item.title.replace("Viewpoint ", ""));
+    const label = create("span", "", item.shortLabel || item.title.replace("Existing View ", ""));
     const src = twinmotionUrl(item);
 
     image.src = src;
@@ -412,16 +573,35 @@ function renderViewports() {
     image.loading = "lazy";
     image.decoding = "async";
     thumb.type = "button";
-    thumb.classList.toggle("active", item.id === state.selectedViewportId);
+    thumb.classList.toggle("active", item.id === state.selectedReferenceId);
     thumb.setAttribute("aria-label", `Select ${item.title}`);
     thumb.addEventListener("click", () => {
-      state.selectedViewportId = item.id;
+      state.selectedReferenceId = item.id;
       renderViewports();
+    });
+    thumb.append(image, label);
+    els.existingThumbGrid.append(thumb);
+  });
+
+  proposedViews.viewpoints.forEach((item) => {
+    const thumb = create("button", "viewport-thumb");
+    const image = create("img");
+    const label = create("span", "", item.shortLabel || item.title.replace("Proposed View ", ""));
+    const src = twinmotionUrl(item);
+
+    image.src = src;
+    image.alt = item.title;
+    image.loading = "lazy";
+    image.decoding = "async";
+    thumb.type = "button";
+    thumb.setAttribute("aria-label", `Open ${item.title}`);
+    thumb.addEventListener("click", () => {
+      state.selectedViewportId = item.id;
+      openImageModal(src, item.title, { note: item.note });
     });
     thumb.append(image, label);
     els.viewportThumbGrid.append(thumb);
   });
-
 }
 
 function setLayerMode(mode) {
@@ -543,13 +723,18 @@ async function toggleMapFullscreen() {
 function updateFullscreenButtons() {
   const mapFullscreen = document.fullscreenElement === els.layerWorkspace || els.layerWorkspace.classList.contains("is-fullscreen");
   const modalFullscreen = document.fullscreenElement === els.imageModalShell || els.imageModalShell.classList.contains("is-fullscreen");
-  els.fullscreenMapBtn.textContent = mapFullscreen ? "Exit Full Screen" : "Full Screen";
+  els.fullscreenMapBtn.textContent = mapFullscreen ? "Exit Full Screen" : "Make Full Screen";
   els.fullscreenMapBtn.classList.toggle("is-active", mapFullscreen);
-  els.modalFullscreenBtn.textContent = modalFullscreen ? "Exit Full Screen" : "Full Screen";
+  els.modalFullscreenBtn.textContent = modalFullscreen ? "Exit Full Screen" : "Make Full Screen";
   els.modalFullscreenBtn.classList.toggle("is-active", modalFullscreen);
 }
 
 function applyModalTransform() {
+  if (els.modalStage.classList.contains("is-compare")) {
+    els.modalStage.classList.remove("is-panning");
+    els.modalZoomValue.textContent = "Compare";
+    return;
+  }
   els.modalStage.style.setProperty("--modal-scale", String(state.modal.scale));
   els.modalStage.style.setProperty("--modal-pan-x", `${state.modal.panX}px`);
   els.modalStage.style.setProperty("--modal-pan-y", `${state.modal.panY}px`);
@@ -578,23 +763,74 @@ function resetModalView() {
   applyModalTransform();
 }
 
-function openImageModal(src, title) {
+function openImageModal(src, title, options = {}) {
   els.modalTitle.textContent = title;
-  els.modalImg.src = src;
-  els.modalImg.alt = title;
+  const compare = options.compare || null;
+  const note = options.note || "";
+
+  els.modalStage.classList.toggle("is-compare", Boolean(compare));
+  els.modalCompare.hidden = !compare;
+
+  if (compare) {
+    els.modalImg.removeAttribute("src");
+    els.modalImg.alt = "";
+    els.modalCompareImgA.src = src;
+    els.modalCompareImgA.alt = title;
+    els.modalCompareImgB.src = compare.src;
+    els.modalCompareImgB.alt = compare.title || "Comparison Image";
+    els.modalCompareLabelA.textContent = options.label || "View 4";
+    els.modalCompareLabelB.textContent = compare.label || "View 5";
+    els.modalCompareImgA.onclick = () => openImageModal(src, options.label || title, { note, label: options.label || "Image" });
+    els.modalCompareImgB.onclick = () => openImageModal(compare.src, compare.title || "Comparison Image", {
+      note,
+      label: compare.label || "Image"
+    });
+  } else {
+    els.modalImg.src = src;
+    els.modalImg.alt = title;
+    els.modalCompare.hidden = true;
+    els.modalCompareImgA.removeAttribute("src");
+    els.modalCompareImgB.removeAttribute("src");
+    els.modalCompareImgA.onclick = null;
+    els.modalCompareImgB.onclick = null;
+    els.modalCompareLabelA.textContent = "View 4";
+    els.modalCompareLabelB.textContent = "View 5";
+  }
+
+  els.modalInfo.hidden = !note;
+  els.modalNote.textContent = note;
+  [els.modalZoomOutBtn, els.modalZoomInBtn, els.modalResetBtn].forEach((button) => {
+    button.hidden = Boolean(compare);
+  });
   els.imageModal.classList.add("open");
   els.imageModal.setAttribute("aria-hidden", "false");
   resetModalView();
 }
 
-async function closeImageModal() {
+async function closeImageModal(options = {}) {
   els.imageModal.classList.remove("open");
   els.imageModal.setAttribute("aria-hidden", "true");
   els.imageModalShell.classList.remove("is-fullscreen");
+  els.modalStage.classList.remove("is-compare");
   els.modalImg.removeAttribute("src");
+  els.modalCompare.hidden = true;
+  els.modalCompareImgA.removeAttribute("src");
+  els.modalCompareImgB.removeAttribute("src");
+  els.modalCompareImgA.onclick = null;
+  els.modalCompareImgB.onclick = null;
+  els.modalCompareLabelA.textContent = "View 4";
+  els.modalCompareLabelB.textContent = "View 5";
+  els.modalInfo.hidden = true;
+  els.modalNote.textContent = "";
+  [els.modalZoomOutBtn, els.modalZoomInBtn, els.modalResetBtn].forEach((button) => {
+    button.hidden = false;
+  });
 
   if (document.fullscreenElement === els.imageModalShell) {
     await exitNativeFullscreen();
+  }
+  if (!options.keepHash) {
+    clearViewerHash();
   }
   updateFullscreenButtons();
 }
@@ -716,6 +952,7 @@ function wireJumpButtons() {
 
 function wireEvents() {
   wireJumpButtons();
+  window.addEventListener("hashchange", syncModalFromHash);
 
   els.singleModeBtn.addEventListener("click", () => setLayerMode("single"));
   els.sliderModeBtn.addEventListener("click", () => setLayerMode("slider"));
@@ -803,12 +1040,14 @@ function wireEvents() {
   els.imageStage.addEventListener("dblclick", resetView);
 
   els.modalStage.addEventListener("wheel", (event) => {
+    if (els.modalStage.classList.contains("is-compare")) return;
     event.preventDefault();
     const direction = event.deltaY < 0 ? 1.14 : 0.88;
     setModalScale(state.modal.scale * direction);
   }, { passive: false });
 
   els.modalStage.addEventListener("pointerdown", (event) => {
+    if (els.modalStage.classList.contains("is-compare")) return;
     state.modal.isPanning = true;
     state.modal.startX = event.clientX;
     state.modal.startY = event.clientY;
@@ -819,6 +1058,7 @@ function wireEvents() {
   });
 
   els.modalStage.addEventListener("pointermove", (event) => {
+    if (els.modalStage.classList.contains("is-compare")) return;
     if (!state.modal.isPanning) return;
     state.modal.panX = state.modal.startPanX + event.clientX - state.modal.startX;
     state.modal.panY = state.modal.startPanY + event.clientY - state.modal.startY;
@@ -856,8 +1096,10 @@ function wireEvents() {
 async function init() {
   cacheElements();
   await loadProjects();
+  registerViewerBridge();
   wireEvents();
   renderAll();
+  syncModalFromHash();
 }
 
 init().catch((error) => {

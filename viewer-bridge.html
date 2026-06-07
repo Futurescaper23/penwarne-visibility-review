@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opening viewer</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #050c17;
+      color: #f2f7ff;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .status {
+      padding: 20px 24px;
+      border: 1px solid rgba(132, 185, 255, 0.18);
+      border-radius: 18px;
+      background: rgba(10, 21, 40, 0.88);
+      text-align: center;
+      line-height: 1.5;
+      max-width: 460px;
+    }
+
+    .status strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="status">
+    <strong>Opening image viewer</strong>
+    If this tab does not close by itself, you can return to the planning app.
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const targetHash = new URLSearchParams();
+    const src = params.get("src");
+
+    if (src) {
+      targetHash.set("src", src);
+    }
+
+    const title = params.get("title");
+    const caption = params.get("caption") || params.get("note");
+
+    if (title) {
+      targetHash.set("title", title);
+    }
+
+    if (caption) {
+      targetHash.set("caption", caption);
+    }
+
+    ["src2", "title2", "label", "label2"].forEach((key) => {
+      const value = params.get(key);
+      if (value) {
+        targetHash.set(key, value);
+      }
+    });
+
+    const requestId = `viewer-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const payload = {
+      src: targetHash.get("src"),
+      title: targetHash.get("title") || "Planning Evidence Image",
+      note: targetHash.get("caption") || "",
+      requestId,
+      label: targetHash.get("label") || "Image",
+      compare: targetHash.get("src2")
+        ? {
+            src: targetHash.get("src2"),
+            title: targetHash.get("title2") || "Comparison Image",
+            label: targetHash.get("label2") || "Comparison"
+          }
+        : null
+    };
+    const hashUrl = `#viewer?${targetHash.toString()}`;
+    const fallbackUrl = `/image-viewer.html?${targetHash.toString()}`;
+    let bridgeFinished = false;
+
+    function notifyOpenTabs() {
+      try {
+        if (typeof BroadcastChannel !== "undefined") {
+          const channel = new BroadcastChannel("planning-image-viewer");
+          channel.postMessage(payload);
+          channel.close();
+        }
+      } catch (error) {
+        // Ignore broadcast failures and try the storage fallback.
+      }
+
+      try {
+        localStorage.setItem("planning-image-viewer", JSON.stringify({
+          ...payload,
+          ts: Date.now()
+        }));
+      } catch (error) {
+        // Ignore storage failures.
+      }
+    }
+
+    function finishBridge() {
+      if (bridgeFinished) return;
+      bridgeFinished = true;
+      try {
+        window.close();
+      } catch (error) {
+        // If the browser refuses to close the tab, leave the status message in place.
+      }
+    }
+
+    function fallbackToStandalone() {
+      if (bridgeFinished) return;
+      bridgeFinished = true;
+      window.location.replace(fallbackUrl);
+    }
+
+    window.addEventListener("storage", (event) => {
+      if (event.key !== "planning-image-viewer-ack" || !event.newValue) return;
+
+      try {
+        const ack = JSON.parse(event.newValue);
+        if (ack.requestId === requestId) {
+          finishBridge();
+        }
+      } catch (error) {
+        // Ignore malformed acknowledgement payloads.
+      }
+    });
+
+    try {
+      notifyOpenTabs();
+
+      if (window.parent && window.parent !== window) {
+        window.parent.location.hash = hashUrl;
+      } else if (window.opener && window.opener !== window) {
+        window.opener.location.hash = hashUrl;
+      }
+
+      setTimeout(() => {
+        if (!bridgeFinished) {
+          fallbackToStandalone();
+        }
+      }, 900);
+
+    } catch (error) {
+      setTimeout(fallbackToStandalone, 220);
+    }
+  </script>
+</body>
+</html>

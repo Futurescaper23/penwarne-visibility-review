@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SiteView Planning Evidence | FutureScaping Labs</title>
-  <meta name="description" content="Premium planning evidence workspace for drone mapping, 3D context, viewpoint review, terrain layers, and 360 panorama delivery.">
+  <title>SiteView Visibility Review | FutureScaping Labs</title>
+  <meta name="description" content="Premium visibility review workspace for drone mapping, 3D context, viewpoint review, terrain layers, and 360 panorama delivery.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -37,8 +37,8 @@
             </div>
           </div>
           <p class="fs-shell__eyebrow" id="heroEyebrow"></p>
-          <h1 class="fs-shell__title" id="projectTitle">SiteView Planning Evidence</h1>
-          <p class="fs-shell__tagline">See the full picture. Plan with confidence.</p>
+          <h1 class="fs-shell__title" id="projectTitle">SiteView Visibility Review</h1>
+          <p class="fs-shell__tagline">See the full picture. Review with confidence.</p>
           <p class="fs-shell__summary" id="projectSummary"></p>
         </div>
 
@@ -89,8 +89,9 @@
 
         <div class="fs-shell__dock fs-shell__dock--right">
           <p class="eyebrow">Open The Pack</p>
-          <h2 id="heroVisualTitle">SiteView Planning Evidence</h2>
+          <h2 id="heroVisualTitle">SiteView Visibility Review</h2>
           <p id="heroVisualNote" class="muted"></p>
+          <p class="mobile-advisory">Best reviewed on a larger screen, though everything here remains accessible on mobile.</p>
           <div class="hero-actions">
             <button id="explorePackBtn" class="button button-primary" type="button">Explore Evidence Pack</button>
             <a id="heroProposedModelLink" class="button" href="#" target="_blank" rel="noopener noreferrer">Open 3D Scene</a>
@@ -105,7 +106,7 @@
         <div class="section-stack">
           <article class="section-head glass">
             <div>
-              <p class="eyebrow">Planning Question</p>
+              <p class="eyebrow">Review Question</p>
               <h2 id="planningQuestion">Visibility assessment</h2>
             </div>
             <p id="decisionLine" class="muted compact"></p>
@@ -114,7 +115,7 @@
           <div class="overview-grid">
             <article class="glass story-panel">
               <p class="eyebrow">Evidence Route</p>
-              <h3>One clear review path from terrain to decision</h3>
+              <h3>One clear review path from terrain to conclusion</h3>
               <div id="workflowList" class="workflow-list"></div>
             </article>
 
@@ -127,7 +128,7 @@
               <div class="panel-head">
                 <div>
                   <p class="eyebrow">What This Pack Explains</p>
-                  <h2>Planning visibility in context</h2>
+                  <h2>Visibility in context</h2>
               </div>
               <p class="muted compact">The site, landform, model placement, mapped viewpoints, and technical imagery are arranged as one evidence-led story rather than separate downloads.</p>
             </div>
@@ -149,20 +150,39 @@
             <article class="scene-model-card">
               <p class="eyebrow">Baseline</p>
               <h3>Existing Survey Model</h3>
-              <p class="muted">Review the current site first to understand landform, existing vegetation, nearby receptors, and the unbuilt landscape context.</p>
+              <p class="muted">Review the current site first to understand landform, existing vegetation and the unbuilt landscape context.</p>
               <a id="sceneExistingModelLink" class="button button-ghost" href="#" target="_blank" rel="noopener noreferrer">Open Existing Model</a>
             </article>
             <article class="scene-model-card scene-model-card--primary">
               <p class="eyebrow">Proposal</p>
               <h3>Proposed Development Model</h3>
-              <p class="muted">Inspect the proposed poultry shed in the same surveyed environment, then move into mapped viewports for fixed-camera evidence.</p>
+              <p class="muted">Inspect the proposed poultry shed in the same surveyed environment, then move into mapped viewports for fixed-camera comparison.</p>
               <a id="sceneProposedModelLink" class="button button-primary" href="#" target="_blank" rel="noopener noreferrer">Open Proposed Model</a>
             </article>
             <article class="scene-model-card scene-model-card--guide">
               <p class="eyebrow">Review Tip</p>
               <h3>Use the model as orientation, then test the actual views</h3>
-              <p class="muted">The 3D scene explains where the proposal sits. The viewport and map sections then test what is actually visible from the mapped camera positions.</p>
+              <p class="muted">The 3D scene explains where the proposal sits. The viewport and map sections then check what is actually visible from the mapped camera positions.</p>
             </article>
+          </div>
+          <div id="vistaPanel" class="scene-vista scene-vista--hidden">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Interactive Tour</p>
+                <h2>3DVista review window</h2>
+              </div>
+              <a id="sceneVistaLink" class="button button-primary" href="#" target="_blank" rel="noopener noreferrer">Open 3DVista Tour</a>
+            </div>
+            <p class="muted compact">Use the embedded 3DVista tour to move through panoramas, test hotspots, and move between the supporting images in this pack.</p>
+            <div class="scene-vista__frame-wrap">
+              <iframe
+                id="sceneVistaFrame"
+                class="scene-vista__frame"
+                title="3DVista virtual tour"
+                loading="lazy"
+                allowfullscreen
+              ></iframe>
+            </div>
           </div>
         </article>
       </section>
@@ -171,23 +191,30 @@
         <article class="glass viewport-panel">
           <div class="viewport-topline">
             <div class="viewport-intro">
-              <p class="eyebrow">Viewport Evidence</p>
-              <h2>Guided Viewpoint Review</h2>
+              <p class="eyebrow">Viewport Comparisons</p>
+              <h2>Big image viewpoint review</h2>
               <p id="viewportSummary" class="muted compact"></p>
             </div>
             <div id="viewportMetricBar" class="viewport-metric-bar"></div>
           </div>
-          <div class="viewport-workspace section-gap">
-            <div id="viewportMap" class="viewport-map"></div>
-            <div id="selectedViewport" class="selected-viewport"></div>
+          <div id="comparisonStage" class="comparison-stage section-gap"></div>
+          <div class="viewport-strip glass section-gap">
+            <div class="viewport-strip__head">
+              <div>
+                <p class="eyebrow">Reference Views</p>
+                <h3>Choose a viewpoint</h3>
+              </div>
+              <p class="muted compact">Views 1 and 3 now include matching proposed comparisons. The others stay as large reference images until more pairs are added.</p>
+            </div>
+            <div id="existingThumbGrid" class="viewport-thumb-grid section-gap"></div>
           </div>
           <div class="viewport-strip glass section-gap">
             <div class="viewport-strip__head">
               <div>
-                <p class="eyebrow">Viewport Strip</p>
-                <h3>Camera Positions A-J</h3>
+                <p class="eyebrow">Proposed Views</p>
+                <h3>Additional proposed set</h3>
               </div>
-              <p class="muted compact">Choose a viewpoint to update the map and review image.</p>
+              <p class="muted compact">The wider proposed set is still here for quick review and hotspot linking.</p>
             </div>
             <div id="viewportThumbGrid" class="viewport-thumb-grid section-gap"></div>
           </div>
@@ -211,7 +238,6 @@
                 <img id="shedFeaturedImg" alt="">
               </button>
               <div class="shed-gallery__overlay">
-                <p class="eyebrow">Featured Visual</p>
                 <h3 id="shedFeaturedTitle">Detailed Shed Visual</h3>
                 <p id="shedFeaturedNote" class="muted"></p>
               </div>
@@ -305,7 +331,7 @@
               <p class="eyebrow">Method Record</p>
               <h2>Planning evidence record</h2>
             </div>
-            <p class="muted compact">Capture basis, modelling assumptions, image interpretation, and the limits that should be confirmed before formal planning submission.</p>
+            <p class="muted compact">Capture the basis of review, modelling assumptions, image interpretation and the limits that would need confirming if this work later moved towards planning.</p>
           </div>
           <div id="methodGrid" class="method-grid section-gap"></div>
         </article>
@@ -337,12 +363,26 @@
           <button id="modalZoomOutBtn" class="button button-ghost" type="button">-</button>
           <button id="modalZoomInBtn" class="button button-ghost" type="button">+</button>
           <button id="modalResetBtn" class="button button-ghost" type="button">Reset</button>
-          <button id="modalFullscreenBtn" class="button" type="button">Full Screen</button>
+          <button id="modalFullscreenBtn" class="button" type="button">Make Full Screen</button>
           <button id="modalCloseBtn" class="button button-primary" type="button">Close</button>
         </div>
       </div>
       <div id="modalStage" class="modal-stage">
         <img id="modalImg" alt="">
+        <div id="modalCompare" class="modal-compare" hidden>
+          <figure class="modal-compare__figure">
+            <span id="modalCompareLabelA" class="modal-compare__label">View 4</span>
+            <img id="modalCompareImgA" alt="">
+          </figure>
+          <figure class="modal-compare__figure">
+            <span id="modalCompareLabelB" class="modal-compare__label">View 5</span>
+            <img id="modalCompareImgB" alt="">
+          </figure>
+        </div>
+      </div>
+      <div id="modalInfo" class="image-modal__info" hidden>
+        <p class="eyebrow">Image Note</p>
+        <p id="modalNote" class="image-modal__note"></p>
       </div>
       <div class="image-modal__footer">
         <span id="modalZoomValue">100%</span>

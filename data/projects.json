@@ -2,23 +2,23 @@
   "projects": [
     {
       "id": "confidential-rural-site",
-      "name": "Confidential Rural Planning Visibility Pack",
-      "productName": "SiteView Planning Evidence",
-      "heroLine": "Drone mapping, 3D models, viewpoint evidence and interactive map layers for clearer planning decisions.",
+      "name": "Confidential Rural Visibility Review Pack",
+      "productName": "SiteView Visibility Review",
+      "heroLine": "Drone mapping, 3D models, viewpoint review and interactive map layers for early-stage site reconnaissance.",
       "client": "Private Client",
-      "site": "Confidential rural site",
+      "site": "Penwarne Farm, Portmellion",
       "county": "South West England",
-      "status": "Draft evidence workspace",
-      "planningQuestion": "Can the proposed poultry sheds be seen from the church area and other sensitive distant viewpoints?",
-      "summary": "A planning visibility pack showing the site, the surrounding landform, and the proposed poultry sheds in context so the client can review whether the development is likely to be seen from sensitive viewpoints.",
-      "decisionLine": "The pack is designed to answer one simple planning question: from the places people are worried about, can the proposed sheds be seen, and if so how clearly?",
-      "modelUrl": "https://futurescaping.nira.app/a/3JK0VOmMS7G04w4cLc-XQQ/1",
-      "existingModelUrl": "https://futurescaping.nira.app/a/wZAoygblQcGFy6kK9EABvQ/1",
-      "proposedModelUrl": "https://futurescaping.nira.app/a/3JK0VOmMS7G04w4cLc-XQQ/1",
-      "vistaUrl": "",
+      "status": "Pre-planning reconnaissance workspace",
+      "planningQuestion": "Can the proposed poultry sheds be seen from surrounding viewpoints across the wider landscape?",
+      "summary": "An early-stage visibility review showing the site, surrounding landform and proposed poultry sheds in context, so likely visibility can be tested before any planning submission is prepared.",
+      "decisionLine": "This pack is set up as pre-planning reconnaissance: a practical check on where the site can be seen from, how clearly it reads in the landscape, and whether the more distant concerns are likely to be meaningful in reality.",
+      "modelUrl": "https://futurescaping.nira.app/a/Fcu_DheKRJurrHTJG54QJQ/1",
+      "existingModelUrl": "https://futurescaping.nira.app/a/BphaWhybR_ijdCTPaBXs5Q/1",
+      "proposedModelUrl": "https://futurescaping.nira.app/a/Fcu_DheKRJurrHTJG54QJQ/1",
+      "vistaUrl": "projects/confidential-rural-site/3dvista/index.htm",
       "assetBase": "projects/confidential-rural-site/assets",
       "assets": {
-        "heroShell": "hero-shell.png",
+        "heroShell": "hero image.png",
         "viewportDioramaMap": "viewport-diorama-map.png",
         "ortho": "ortho.jpg",
         "dsm": "dsm.png",
@@ -29,12 +29,12 @@
         {
           "label": "Main Question",
           "value": "Visibility",
-          "detail": "Whether the proposed sheds are visible from the church area and other sensitive views."
+          "detail": "Whether the proposed sheds are genuinely noticeable from surrounding roads, distant locations and other wider landscape views."
         },
         {
           "label": "Evidence Included",
           "value": "Rendered Views",
-          "detail": "The pack combines the 3D scene, path-traced viewpoint visuals, map layers, and 360 panorama in one review route."
+          "detail": "The pack combines the 3D scene, viewpoint visuals, map layers and panorama in one early-stage review route."
         },
         {
           "label": "Evidence Route",
@@ -45,34 +45,34 @@
       "overviewSections": [
         {
           "title": "What This Pack Is For",
-          "body": "This is a visual planning evidence pack. It brings the drone survey, the 3D site model, the proposed shed model, and the rendered viewpoint images into one place. The aim is to make the visibility question easy to understand without needing to open lots of separate files."
+          "body": "This is an early-stage visibility review pack rather than a formal planning submission pack. It brings the drone survey, the 3D site model, the proposed shed model and the viewpoint images into one place so the likely visibility of the site can be tested quickly and clearly."
         },
         {
           "title": "How To Read It",
-          "body": "Start with the existing and proposed 3D models in the 3D Scene tab. Then use the Viewports tab to review the key proposed views beside the location map, and the Shed Visuals tab for detailed views of the proposed building. The Map Layers tab supports the assessment by showing the site layout, surface model, and contours."
+          "body": "Start with the existing and proposed 3D models in the 3D Scene tab. Then use the Viewports tab to review the key comparison views and orientation map, and the Shed Visuals tab for detailed images of the proposed building. The Map Layers tab supports the review by showing the site layout, surface model and contours."
         },
         {
           "title": "What The Images Will Show",
-          "body": "Each selected view is used to test whether the proposed sheds are noticeable in the wider landscape, not just whether they can be found when someone knows exactly where to look."
+          "body": "The key question is not whether the site can be found with effort, but whether it would actually be noticed by someone passing through the landscape in normal conditions."
         }
       ],
       "workflow": [
-        "Survey the site and surrounding context by drone so the landform and nearby receptors can be reviewed together.",
+        "Survey the site and surrounding context by drone so the landform and wider landscape setting can be reviewed together.",
         "Build the mapping outputs: orthomosaic for site layout, DSM for surface height, contours for landform, and a 360 panorama for context.",
         "Place the proposed poultry sheds into the 3D site model using the best available design and position information.",
-        "Create matching existing and proposed images from the key viewpoints, especially the church-area view.",
-        "Use this pack to present the evidence in one clear route: model, viewpoints, supporting map layers, and method."
+        "Create matching existing and proposed images from the key roads, graveyard checks and longer-distance viewpoints across the valley.",
+        "Use this pack to review the findings in one clear route: model, viewpoints, supporting map layers and method."
       ],
       "viewpoints": [
         {
           "id": "vp-church",
-          "name": "Church Area",
-          "type": "Sensitive receptor",
+          "name": "Church-side Area",
+          "type": "Distant concern check",
           "distance": "To be confirmed",
           "bearing": "Looking towards the confidential rural site",
-          "status": "Priority viewpoint",
-          "conclusion": "Pending final render",
-          "note": "Primary planning concern. Add existing/proposed render pair once the shed material and model placement are final.",
+          "status": "Key long-distance check",
+          "conclusion": "Visibility appears very limited",
+          "note": "Used to test the long-distance concern associated with the church side of the valley, rather than a confirmed residential receptor view.",
           "existingImage": "",
           "proposedImage": ""
         },
@@ -83,8 +83,8 @@
           "distance": "To be confirmed",
           "bearing": "Looking across the farm entrance and proposed shed position",
           "status": "Supporting viewpoint",
-          "conclusion": "Pending final render",
-          "note": "Useful for explaining near-field visibility and how the sheds sit within existing farm context.",
+          "conclusion": "Site can be seen but does not stand out",
+          "note": "Useful for showing how the site reads from the road and how vegetation and landform interrupt the view.",
           "existingImage": "",
           "proposedImage": ""
         },
@@ -94,258 +94,265 @@
           "type": "Long-distance check",
           "distance": "To be confirmed",
           "bearing": "Looking back towards the development platform",
-          "status": "Optional viewpoint",
-          "conclusion": "Pending final render",
-          "note": "A good place to include any test showing whether the shed roofs break the skyline or remain absorbed by landform.",
+          "status": "Supporting distant viewpoint",
+          "conclusion": "Site remains recessive in the wider landscape",
+          "note": "Useful for testing whether the site sits quietly in the landform rather than drawing attention at distance.",
           "existingImage": "",
           "proposedImage": ""
         }
       ],
-      "twinmotion": {
-        "basePath": "projects/confidential-rural-site/twinmotion/Path Tracing",
-        "summary": "Path-traced proposed-view images showing the poultry sheds from selected camera positions, with the location map kept alongside the selected view so each image can be understood in context.",
-        "overallMap": {
-          "title": "Viewport Location Map",
-          "file": "Map.PNG",
-          "note": "Select a letter on the map, or use the image strip below, to review that viewpoint beside its location."
-        },
-        "mapHotspots": [
+      "referenceViews": {
+        "summary": "Existing and proposed viewpoint images are arranged here as a simple visual comparison set for early-stage review.",
+        "views": [
           {
-            "label": "A",
-            "viewpointId": "tm-a",
-            "x": 13.82,
-            "y": 30.90
+            "id": "existing-1",
+            "title": "Existing View 1",
+            "shortLabel": "1",
+            "file": "View 1.jpg",
+            "basePath": "projects/confidential-rural-site/viewpoints",
+            "note": "The proposed building sits quietly within the wider site with planting around it and does not draw attention in the view.",
+            "comparison": {
+              "title": "Proposed View 1",
+              "file": "View-1.png",
+              "basePath": "projects/confidential-rural-site/viewpoints",
+              "note": ""
+            }
           },
           {
-            "label": "B",
-            "viewpointId": "tm-b",
-            "x": 24.21,
-            "y": 25.58
+            "id": "existing-2",
+            "title": "Existing View 2",
+            "shortLabel": "2",
+            "file": "View 2.jpg",
+            "basePath": "projects/confidential-rural-site/viewpoints",
+            "note": "From the road in area 2.2, you are looking towards the site, but other planting and greenery interrupt the view so the proposal does not stand out."
           },
           {
-            "label": "C",
-            "viewpointId": "tm-c",
-            "x": 76.32,
-            "y": 23.72
+            "id": "existing-3",
+            "title": "Existing View 3",
+            "shortLabel": "3",
+            "file": "View 3.jpg",
+            "basePath": "projects/confidential-rural-site/viewpoints",
+            "note": "The building sits back on the distant hilltop and does not stand out in the wider scene. It reads as part of the site with planting around it.",
+            "comparison": {
+              "title": "Proposed View 3",
+              "file": "View-3.png",
+              "basePath": "projects/confidential-rural-site/viewpoints",
+              "note": ""
+            }
           },
           {
-            "label": "D",
-            "viewpointId": "tm-d",
-            "x": 94.40,
-            "y": 33.71
+            "id": "existing-4",
+            "title": "Existing View 4",
+            "shortLabel": "4",
+            "file": "View 4.jpg",
+            "basePath": "projects/confidential-rural-site/viewpoints",
+            "note": "This graveyard view looks towards the site, but I could not find anywhere in the church itself with a meaningful glimpse in this direction. The trees are not yet fully in leaf here."
           },
           {
-            "label": "E",
-            "viewpointId": "tm-e",
-            "x": 77.18,
-            "y": 60.93
+            "id": "existing-5",
+            "title": "Existing View 5",
+            "shortLabel": "5",
+            "file": "View 5.jpg",
+            "basePath": "projects/confidential-rural-site/viewpoints",
+            "note": "This is another graveyard view towards the site. As with View 4, there was no meaningful outward view from the church itself, and the tree cover shown here is before full leaf."
           },
           {
-            "label": "F",
-            "viewpointId": "tm-f",
-            "x": 53.58,
-            "y": 82.33
-          },
-          {
-            "label": "G",
-            "viewpointId": "tm-g",
-            "x": 37.55,
-            "y": 83.09
-          },
-          {
-            "label": "H",
-            "viewpointId": "tm-h",
-            "x": 16.84,
-            "y": 76.26
-          },
-          {
-            "label": "I",
-            "viewpointId": "tm-i",
-            "x": 12.30,
-            "y": 67.54
-          },
-          {
-            "label": "J",
-            "viewpointId": "tm-j",
-            "x": 10.73,
-            "y": 45.02
+            "id": "existing-6",
+            "title": "Existing View 6",
+            "shortLabel": "6",
+            "file": "View 6.jpg",
+            "basePath": "projects/confidential-rural-site/viewpoints",
+            "note": "This was the clearest place to see the site from, slightly down the road from the church area. Even here it is so far away that the development would be very unlikely to be noticed without deliberately looking for it."
           }
-        ],
+        ]
+      },
+      "twinmotion": {
+        "basePath": "projects/confidential-rural-site/twinmotion/Proposed",
+        "summary": "Supporting proposed images for hotspot linking and quick review alongside the main viewpoint comparisons.",
         "viewpoints": [
           {
             "id": "tm-a",
-            "title": "Viewpoint A",
+            "title": "Proposed Visual A",
+            "shortLabel": "A",
             "file": "A.png",
-            "note": "Path-traced proposed-view image from mapped camera position A."
+            "note": "Supporting proposed visual A."
           },
           {
             "id": "tm-b",
-            "title": "Viewpoint B",
+            "title": "Proposed Visual B",
+            "shortLabel": "B",
             "file": "B.png",
-            "note": "Path-traced proposed-view image from mapped camera position B."
+            "note": "Supporting proposed visual B."
           },
           {
             "id": "tm-c",
-            "title": "Viewpoint C",
+            "title": "Proposed Visual C",
+            "shortLabel": "C",
             "file": "C.png",
-            "note": "Path-traced proposed-view image from mapped camera position C."
+            "note": "Supporting proposed visual C."
           },
           {
             "id": "tm-d",
-            "title": "Viewpoint D",
+            "title": "Proposed Visual D",
+            "shortLabel": "D",
             "file": "D.png",
-            "note": "Path-traced proposed-view image from mapped camera position D."
+            "note": "Supporting proposed visual D."
           },
           {
             "id": "tm-e",
-            "title": "Viewpoint E",
+            "title": "Proposed Visual E",
+            "shortLabel": "E",
             "file": "E.png",
-            "note": "Path-traced proposed-view image from mapped camera position E."
+            "note": "Supporting proposed visual E."
           },
           {
             "id": "tm-f",
-            "title": "Viewpoint F",
+            "title": "Proposed Visual F",
+            "shortLabel": "F",
             "file": "F.png",
-            "note": "Path-traced proposed-view image from mapped camera position F."
+            "note": "Supporting proposed visual F."
           },
           {
             "id": "tm-g",
-            "title": "Viewpoint G",
+            "title": "Proposed Visual G",
+            "shortLabel": "G",
             "file": "G.png",
-            "note": "Path-traced proposed-view image from mapped camera position G."
+            "note": "Supporting proposed visual G."
           },
           {
             "id": "tm-h",
-            "title": "Viewpoint H",
+            "title": "Proposed Visual H",
+            "shortLabel": "H",
             "file": "H.png",
-            "note": "Path-traced proposed-view image from mapped camera position H."
-          },
-          {
-            "id": "tm-i",
-            "title": "Viewpoint I",
-            "file": "I.png",
-            "note": "Path-traced proposed-view image from mapped camera position I."
-          },
-          {
-            "id": "tm-j",
-            "title": "Viewpoint J",
-            "file": "J.png",
-            "note": "Path-traced proposed-view image from mapped camera position J."
+            "note": "Supporting proposed visual H."
           }
         ],
         "shedViews": [
           {
             "id": "shed-1",
             "title": "Detailed Shed Visual 1",
-            "file": "Image1.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image1.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 1."
           },
           {
             "id": "shed-2",
             "title": "Detailed Shed Visual 2",
-            "file": "Image2.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image2.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 2."
           },
           {
             "id": "shed-3",
             "title": "Detailed Shed Visual 3",
-            "file": "Image3.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image3.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 3."
           },
           {
             "id": "shed-4",
             "title": "Detailed Shed Visual 4",
-            "file": "Image4.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image4.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 4."
           },
           {
             "id": "shed-5",
             "title": "Detailed Shed Visual 5",
-            "file": "Image5.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image5.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 5."
           },
           {
             "id": "shed-6",
             "title": "Detailed Shed Visual 6",
-            "file": "Image6.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image6.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 6."
           },
           {
             "id": "shed-7",
             "title": "Detailed Shed Visual 7",
-            "file": "Image7.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image7.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 7."
           },
           {
             "id": "shed-8",
             "title": "Detailed Shed Visual 8",
-            "file": "Image8.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image8.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 8."
           },
           {
             "id": "shed-9",
             "title": "Detailed Shed Visual 9",
-            "file": "Image9.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image9.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 9."
           },
           {
             "id": "shed-10",
             "title": "Detailed Shed Visual 10",
-            "file": "Image10.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image10.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 10."
           },
           {
             "id": "shed-11",
             "title": "Detailed Shed Visual 11",
-            "file": "Image11.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image11.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 11."
           },
           {
             "id": "shed-12",
             "title": "Detailed Shed Visual 12",
-            "file": "Image22.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image12.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 12."
           },
           {
             "id": "shed-13",
             "title": "Detailed Shed Visual 13",
-            "file": "Image23.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
-          },
-          {
-            "id": "shed-14",
-            "title": "Detailed Shed Visual 14",
-            "file": "Image24.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image13.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 13."
           },
           {
             "id": "shed-15",
             "title": "Detailed Shed Visual 15",
-            "file": "Image26_000.png",
-            "note": "High-quality path-traced visual of the proposed shed in its immediate landscape setting."
+            "file": "Image15.jpg",
+            "basePath": "projects/confidential-rural-site/twinmotion/Shed Visuals",
+            "note": "Detailed shed visual 15."
           }
         ]
       },
       "method": {
-        "surveyBase": "The site has been captured by drone and processed into mapping and 3D outputs. These outputs provide the base evidence for understanding the site layout, surrounding landform, and relationship to nearby receptors.",
-        "existingModel": "The existing model shows the surveyed site without the proposed poultry sheds. This is used as the baseline context so the client can understand what is currently visible in the landscape.",
-        "proposedModel": "The proposed model includes the poultry sheds placed into the 3D scene. This allows the viewer to compare the current site with the proposed development in the same spatial context.",
-        "viewpointRenders": "The pack includes path-traced proposed-view images from the mapped camera positions. These should be read with the viewpoint location map so the direction and relationship to the proposed shed can be understood.",
-        "mapLayers": "The orthomosaic shows the site from above, the DSM helps explain height and landform, and the contour layer helps show how the landscape may screen or expose the proposed buildings.",
-        "materialAssumptions": "The poultry shed materials are treated as matte and realistic, because overly reflective materials can make buildings appear more prominent than they would be in practice.",
-        "interpretation": "The important planning question is not simply whether a building can be found in the image, but whether it would be noticeable to a normal viewer from that location. Each viewpoint should therefore include a short written conclusion.",
-        "limitations": "This pack is a visual assessment and client review tool. Before it is used as formal planning evidence, the viewpoint positions, distances, shed dimensions, model placement, date of imagery, and any rendering assumptions should be confirmed."
+        "surveyBase": "The site has been captured by drone and processed into mapping and 3D outputs. These outputs provide the base material for understanding the site layout, surrounding landform and wider landscape setting.",
+        "existingModel": "The existing model shows the surveyed site without the proposed poultry sheds. It is used as the baseline context for understanding what is currently visible in the landscape.",
+        "proposedModel": "The proposed model places the poultry sheds into the same surveyed scene so their likely presence can be reviewed in context before any formal application stage.",
+        "viewpointRenders": "The pack includes proposed viewpoint images from selected camera positions. These should be read alongside the orientation map so the direction of view and relationship to the site are clear.",
+        "mapLayers": "The orthomosaic shows the site from above, the DSM helps explain surface height and landform, and the contour layer helps show how the landscape may screen or expose the proposed buildings.",
+        "materialAssumptions": "The poultry shed materials are treated as matte and realistic, because overly reflective finishes can make buildings appear more prominent than they would be in practice.",
+        "interpretation": "The important question is not simply whether the site can be found in an image, but whether it would actually be noticed by someone moving through the landscape in ordinary use.",
+        "limitations": "This pack is an early-stage review and reconnaissance tool. If it is later developed into formal planning material, the viewpoint positions, distances, shed dimensions, model placement, imagery dates and any rendering assumptions should all be confirmed."
       },
       "downloads": [
         {
           "label": "Viewport image pack",
-          "href": "downloads/confidential-viewports.zip",
-          "note": "ZIP download containing the A-J path-traced viewport images and the viewport location map."
+          "href": "https://www.dropbox.com/scl/fo/d9nbyez61am3elvnfrp3w/AKfl-WXmXgNYsHz1QzfrdNI?rlkey=00w408ufbj15pmuwbv917vxx3&st=b6ybe3zl&dl=1",
+          "note": "Dropbox download for the viewport image pack."
         },
         {
           "label": "Detailed shed visuals pack",
-          "href": "downloads/confidential-shed-visuals.zip",
-          "note": "ZIP download containing the high-quality path-traced shed detail visuals."
+          "href": "https://www.dropbox.com/scl/fo/sp5i4ztnvmousv1927kgp/ACPguNvpMUzbeaSF-TdzrSk?rlkey=h5e0enhszfzy834hy7v5q1l90&st=fgld3r5j&dl=1",
+          "note": "Dropbox download for the shed visuals pack."
+        },
+        {
+          "label": "Photos pack",
+          "href": "https://www.dropbox.com/scl/fo/6sstf756cu5ylz9iu69db/AEjkQDbyDS-zYPQMTm5kO5w?rlkey=m8xt2z1q0ait1vq2dilpfky4w&st=5378dxpm&dl=1",
+          "note": "Dropbox download for the photos pack."
         },
         {
           "label": "Orthomosaic",
@@ -366,6 +373,11 @@
           "label": "360 panorama",
           "href": "projects/confidential-rural-site/assets/panorama.jpg",
           "note": "Equirectangular panorama used in the 360 context viewer."
+        },
+        {
+          "label": "3DVista virtual tour",
+          "href": "projects/confidential-rural-site/3dvista/index.htm",
+          "note": "Published 3DVista tour with interactive hotspots and linked scene navigation."
         }
       ]
     }
