@@ -21,6 +21,8 @@ const state = {
   selectedReferenceId: null,
   selectedViewportId: null,
   selectedShedId: null,
+  vistaLoaded: false,
+  vistaWakeAttempts: 0,
   modal: {
     scale: 1,
     panX: 0,
@@ -35,6 +37,7 @@ const state = {
 
 const els = {};
 let viewerChannel = null;
+let vistaWakeTimer = null;
 
 const layerLabels = {
   ortho: "Orthomosaic",
@@ -323,13 +326,88 @@ function renderScene() {
     els.vistaPanel.classList.remove("scene-vista--hidden");
     els.sceneVistaLink.href = state.project.vistaUrl;
     els.sceneVistaLink.removeAttribute("aria-disabled");
-    els.sceneVistaFrame.src = state.project.vistaUrl;
+    els.sceneVistaFrame.dataset.src = state.project.vistaUrl;
+    els.sceneVistaFrame.classList.remove("is-ready");
+    setVistaLoadingState(true, "Open the 3D scene and the tour will load behind this clean viewer.");
   } else {
     els.vistaPanel.classList.add("scene-vista--hidden");
     els.sceneVistaLink.href = "#";
     els.sceneVistaLink.setAttribute("aria-disabled", "true");
+    delete els.sceneVistaFrame.dataset.src;
     els.sceneVistaFrame.removeAttribute("src");
+    els.sceneVistaFrame.classList.remove("is-ready");
+    setVistaLoadingState(false);
   }
+}
+
+function setVistaLoadingState(isLoading, message = "") {
+  if (!els.sceneVistaLoading) return;
+  els.sceneVistaLoading.classList.toggle("is-hidden", !isLoading);
+  if (message && els.sceneVistaLoadingText) {
+    els.sceneVistaLoadingText.textContent = message;
+  }
+}
+
+function vistaShowsWakeScreen() {
+  try {
+    const doc = els.sceneVistaFrame.contentDocument;
+    if (!doc?.body) return false;
+    const text = `${doc.title || ""} ${doc.body.innerText || ""}`.toLowerCase();
+    return [
+      "service waking up",
+      "application loading",
+      "incoming http request detected",
+      "starting instance",
+      "render to be ready",
+      "start building on render today"
+    ].some((needle) => text.includes(needle));
+  } catch {
+    return false;
+  }
+}
+
+function clearVistaWakeTimer() {
+  if (!vistaWakeTimer) return;
+  clearTimeout(vistaWakeTimer);
+  vistaWakeTimer = null;
+}
+
+function queueVistaRetry() {
+  clearVistaWakeTimer();
+  vistaWakeTimer = setTimeout(() => {
+    const src = els.sceneVistaFrame.dataset.src;
+    if (!src) return;
+    els.sceneVistaFrame.src = `${src}${src.includes("?") ? "&" : "?"}wake=${Date.now()}`;
+  }, 1600);
+}
+
+function ensureVistaLoaded() {
+  const src = els.sceneVistaFrame.dataset.src;
+  if (!src || state.vistaLoaded) return;
+  setVistaLoadingState(true, "Preparing the interactive tour so it opens without the hosting splash screen.");
+  els.sceneVistaFrame.classList.remove("is-ready");
+  els.sceneVistaFrame.src = src;
+}
+
+function handleVistaFrameLoad() {
+  if (!state.project?.vistaUrl) return;
+
+  if (vistaShowsWakeScreen()) {
+    state.vistaWakeAttempts += 1;
+    state.vistaLoaded = false;
+    els.sceneVistaFrame.classList.remove("is-ready");
+    setVistaLoadingState(true, "Waking the interactive tour. This usually takes a few seconds on first open.");
+    if (state.vistaWakeAttempts < 8) {
+      queueVistaRetry();
+    }
+    return;
+  }
+
+  clearVistaWakeTimer();
+  state.vistaWakeAttempts = 0;
+  state.vistaLoaded = true;
+  els.sceneVistaFrame.classList.add("is-ready");
+  setVistaLoadingState(false);
 }
 
 function visualCard(item, className = "", meta = {}) {
@@ -919,6 +997,10 @@ function switchTab(tabName) {
   document.querySelectorAll(".fs-shell__nav-item").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.tabTarget === tabName);
   });
+
+  if (tabName === "scene") {
+    ensureVistaLoaded();
+  }
 }
 
 function loadPanorama() {
@@ -953,6 +1035,7 @@ function wireJumpButtons() {
 function wireEvents() {
   wireJumpButtons();
   window.addEventListener("hashchange", syncModalFromHash);
+  els.sceneVistaFrame?.addEventListener("load", handleVistaFrameLoad);
 
   els.singleModeBtn.addEventListener("click", () => setLayerMode("single"));
   els.sliderModeBtn.addEventListener("click", () => setLayerMode("slider"));

@@ -1173,6 +1173,7 @@ main > .tab-panel > article.glass {
 }
 
 .scene-vista__frame-wrap {
+  position: relative;
   min-height: calc(100vh - 320px);
   height: min(900px, calc(100vh - 240px));
   overflow: hidden;
@@ -1181,12 +1182,57 @@ main > .tab-panel > article.glass {
   background: #020611;
 }
 
+.scene-vista__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at center, rgba(40, 92, 167, 0.22), rgba(6, 13, 25, 0.9) 64%, rgba(3, 7, 14, 0.98) 100%);
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.scene-vista__loading.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.scene-vista__loading-card {
+  width: min(100%, 420px);
+  display: grid;
+  gap: 10px;
+  padding: 22px 24px;
+  border-radius: 24px;
+  border: 1px solid rgba(114, 179, 255, 0.22);
+  background:
+    linear-gradient(180deg, rgba(18, 39, 72, 0.84), rgba(7, 16, 30, 0.94)),
+    rgba(255, 255, 255, 0.04);
+  box-shadow: 0 28px 54px rgba(2, 8, 18, 0.36);
+  text-align: left;
+}
+
+.scene-vista__loading-card h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.12;
+}
+
 .scene-vista__frame {
   width: 100%;
   height: 100%;
   display: block;
   border: 0;
   background: #020611;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.scene-vista__frame.is-ready {
+  opacity: 1;
 }
 
 .scene-model-grid {
@@ -2411,6 +2457,111 @@ input[type="range"] {
 
   .hero-visual {
     min-height: 720px;
+  }
+}
+
+@media (max-width: 1180px) and (min-width: 821px) {
+  .fs-shell__stage {
+    min-height: min(86vh, 920px);
+  }
+
+  .fs-shell__nav {
+    top: clamp(168px, 21vh, 198px);
+    left: 16px;
+    width: 76px;
+  }
+
+  .fs-shell__nav-list {
+    gap: 5px;
+    padding: 6px 5px;
+    border-radius: 22px;
+  }
+
+  .fs-shell__nav-item {
+    min-height: 38px;
+    gap: 2px;
+    padding: 4px 3px;
+    border-radius: 13px;
+  }
+
+  .fs-shell__nav-icon-wrap {
+    min-width: 15px;
+    min-height: 15px;
+    font-size: 0.58rem;
+  }
+
+  .fs-shell__nav-label {
+    font-size: 0.39rem;
+    line-height: 1;
+  }
+
+  .fs-shell__copy {
+    left: 34px;
+    max-width: min(420px, calc(100% - 108px));
+  }
+
+  .fs-shell__pills {
+    top: 18px;
+    right: 16px;
+  }
+
+  .fs-shell__dock--right {
+    right: 12px;
+    bottom: 18px;
+    width: min(232px, calc(100% - 28px));
+  }
+}
+
+@media (max-width: 1180px) and (min-width: 821px) and (max-height: 820px) {
+  .fs-shell__stage {
+    min-height: min(90vh, 860px);
+  }
+
+  .fs-shell__nav {
+    top: 156px;
+  }
+
+  .fs-shell__nav-item {
+    min-height: 36px;
+  }
+
+  .fs-shell__nav-label {
+    font-size: 0.37rem;
+  }
+}
+
+@media (min-width: 821px) and (max-height: 760px) {
+  .fs-shell__stage {
+    min-height: min(94vh, 780px);
+  }
+
+  .fs-shell__nav {
+    top: 214px;
+    left: 18px;
+    width: 162px;
+  }
+
+  .fs-shell__nav-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    padding: 6px;
+    border-radius: 24px;
+  }
+
+  .fs-shell__nav-item {
+    min-height: 42px;
+    gap: 3px;
+    padding: 5px 4px;
+  }
+
+  .fs-shell__nav-icon-wrap {
+    min-width: 16px;
+    min-height: 16px;
+    font-size: 0.6rem;
+  }
+
+  .fs-shell__nav-label {
+    font-size: 0.4rem;
   }
 }
 

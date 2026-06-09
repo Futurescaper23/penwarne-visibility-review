@@ -175,6 +175,13 @@
             </div>
             <p class="muted compact">Use the embedded 3DVista tour to move through panoramas, test hotspots, and move between the supporting images in this pack.</p>
             <div class="scene-vista__frame-wrap">
+              <div id="sceneVistaLoading" class="scene-vista__loading" aria-live="polite">
+                <div class="scene-vista__loading-card">
+                  <p class="eyebrow">Interactive Tour</p>
+                  <h3>Preparing 3DVista review window</h3>
+                  <p id="sceneVistaLoadingText" class="muted compact">Loading the tour in the background so it opens cleanly.</p>
+                </div>
+              </div>
               <iframe
                 id="sceneVistaFrame"
                 class="scene-vista__frame"
