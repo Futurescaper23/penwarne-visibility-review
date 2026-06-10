@@ -38,6 +38,7 @@ const state = {
 const els = {};
 let viewerChannel = null;
 let vistaWakeTimer = null;
+let vistaReadyTimer = null;
 
 const layerLabels = {
   ortho: "Orthomosaic",
@@ -169,6 +170,7 @@ function cacheElements() {
     "heroVisualTitle",
     "heroVisualNote",
     "explorePackBtn",
+    "heroPreviewLink",
     "heroExistingModelLink",
     "heroProposedModelLink",
     "planningQuestion",
@@ -181,6 +183,8 @@ function cacheElements() {
     "vistaPanel",
     "sceneVistaLink",
     "sceneVistaFrame",
+    "sceneVistaLoading",
+    "sceneVistaLoadingText",
     "viewportSummary",
     "viewportMetricBar",
     "comparisonStage",
@@ -269,6 +273,9 @@ function renderHero() {
   const heroNote = "Drone mapping, 3D models, viewpoint review and interactive terrain layers in one early-stage visibility review pack.";
   const visualSrc = assetUrl(heroAssetName);
   const heroImage = document.querySelector("[data-fs-hero-image]");
+  const previewUrl = new URL(window.location.href);
+
+  previewUrl.hash = "";
 
   els.heroBrandName.textContent = "FutureScaping Labs";
   els.heroBrandSub.textContent = "SiteView Platform";
@@ -283,6 +290,7 @@ function renderHero() {
   }
   els.heroVisualTitle.textContent = heroTitle;
   els.heroVisualNote.textContent = heroNote;
+  els.heroPreviewLink.href = previewUrl.toString();
 
   setLink(els.heroExistingModelLink, state.project.existingModelUrl, "Open Baseline Model");
   setLink(els.heroProposedModelLink, state.project.proposedModelUrl || state.project.modelUrl, "Open 3D Scene");
@@ -323,6 +331,10 @@ function renderScene() {
   setLink(els.sceneProposedModelLink, state.project.proposedModelUrl || state.project.modelUrl, "Open Proposed Model");
 
   if (state.project.vistaUrl) {
+    clearVistaWakeTimer();
+    clearVistaReadyTimer();
+    state.vistaLoaded = false;
+    state.vistaWakeAttempts = 0;
     els.vistaPanel.classList.remove("scene-vista--hidden");
     els.sceneVistaLink.href = state.project.vistaUrl;
     els.sceneVistaLink.removeAttribute("aria-disabled");
@@ -330,6 +342,10 @@ function renderScene() {
     els.sceneVistaFrame.classList.remove("is-ready");
     setVistaLoadingState(true, "Open the 3D scene and the tour will load behind this clean viewer.");
   } else {
+    clearVistaWakeTimer();
+    clearVistaReadyTimer();
+    state.vistaLoaded = false;
+    state.vistaWakeAttempts = 0;
     els.vistaPanel.classList.add("scene-vista--hidden");
     els.sceneVistaLink.href = "#";
     els.sceneVistaLink.setAttribute("aria-disabled", "true");
@@ -372,6 +388,12 @@ function clearVistaWakeTimer() {
   vistaWakeTimer = null;
 }
 
+function clearVistaReadyTimer() {
+  if (!vistaReadyTimer) return;
+  clearTimeout(vistaReadyTimer);
+  vistaReadyTimer = null;
+}
+
 function queueVistaRetry() {
   clearVistaWakeTimer();
   vistaWakeTimer = setTimeout(() => {
@@ -381,11 +403,28 @@ function queueVistaRetry() {
   }, 1600);
 }
 
+function markVistaReady() {
+  clearVistaWakeTimer();
+  clearVistaReadyTimer();
+  state.vistaWakeAttempts = 0;
+  state.vistaLoaded = true;
+  els.sceneVistaFrame.classList.add("is-ready");
+  setVistaLoadingState(false);
+}
+
+function queueVistaReadyFallback() {
+  clearVistaReadyTimer();
+  vistaReadyTimer = setTimeout(() => {
+    markVistaReady();
+  }, 1800);
+}
+
 function ensureVistaLoaded() {
   const src = els.sceneVistaFrame.dataset.src;
   if (!src || state.vistaLoaded) return;
   setVistaLoadingState(true, "Preparing the interactive tour so it opens without the hosting splash screen.");
   els.sceneVistaFrame.classList.remove("is-ready");
+  clearVistaReadyTimer();
   els.sceneVistaFrame.src = src;
 }
 
@@ -403,11 +442,13 @@ function handleVistaFrameLoad() {
     return;
   }
 
-  clearVistaWakeTimer();
-  state.vistaWakeAttempts = 0;
-  state.vistaLoaded = true;
-  els.sceneVistaFrame.classList.add("is-ready");
-  setVistaLoadingState(false);
+  queueVistaReadyFallback();
+}
+
+function handleVistaMessage(event) {
+  if (event.source !== els.sceneVistaFrame?.contentWindow) return;
+  if (event.data !== "tourLoaded") return;
+  markVistaReady();
 }
 
 function visualCard(item, className = "", meta = {}) {
@@ -1035,6 +1076,7 @@ function wireJumpButtons() {
 function wireEvents() {
   wireJumpButtons();
   window.addEventListener("hashchange", syncModalFromHash);
+  window.addEventListener("message", handleVistaMessage);
   els.sceneVistaFrame?.addEventListener("load", handleVistaFrameLoad);
 
   els.singleModeBtn.addEventListener("click", () => setLayerMode("single"));
